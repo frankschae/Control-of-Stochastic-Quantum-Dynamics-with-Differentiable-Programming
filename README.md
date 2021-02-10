@@ -28,7 +28,7 @@ NN to a hand-crafted control strategy.
 
 
 <p align="center">
-  <img src="./misc/method.png" alt="scheme" height="400px" width="648px">
+  <img src="./misc/method.png" alt="scheme" height="400px" width="748px">
 </p>
 
 ### Control scenarios
@@ -36,13 +36,13 @@ NN to a hand-crafted control strategy.
 The repository contains different examples for the control of a single qubit:
 
     - SDE control based on full knowledge of the state of the qubit and a continuously
-      updated control drive using continuous adjoint sensitivity methods, see
+      updated control drive using continuous adjoint sensitivity methods, see [the file](./continuously-updated-control/Control.jl).
 
     - SDE control based on full knowledge of the state of the qubit and a
-      piecewise-constant control drive using a direct AD approach, see
+      piecewise-constant control drive using a direct AD approach, see [the file](./piecewise-constant-control/Control.jl).
 
     - SDE control based on the record of the measured homodyne current and a
-      piecewise-constant control drive using a direct AD approach, see
+      piecewise-constant control drive using a direct AD approach, see [the file](./homodyne-current/Control.jl).
 
     - ODE control (closed quantum system) based on full knowledge of the state of
       the qubit and a continuously updated control drive using continuous adjoint
@@ -52,13 +52,13 @@ The repository contains different examples for the control of a single qubit:
 ### How to run/ prerequisites:
 
 - install [julia](https://julialang.org/downloads/)
-- individual files can be executed by calling, e.g., julia spinchain.py -e 2000
+- individual files can be executed by calling, e.g., julia --threads 10 Control.jl 0.001 1000 1
   from terminal. Please find the possible parser arguments in the respective julia file.
 - output data/figures are stored in the associated data/figures folder.
 - other physical systems can be implemented by modifying the respective drift and
   diffusion functions.
 - alternative basis expansions replacing the neural networks are described in
-  the [docs](https://diffeqflux.sciml.ai/dev/layers/BasisLayers/)
+  the [docs](https://diffeqflux.sciml.ai/dev/layers/BasisLayers/).
 
 
 ## Authors:
