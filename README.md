@@ -52,13 +52,55 @@ The repository contains different examples for the control of a single qubit:
 ### How to run/ prerequisites:
 
 - install [julia](https://julialang.org/downloads/)
-- individual files can be executed by calling, e.g., julia --threads 10 Control.jl 0.001 1000 1
+- individual files can be executed by calling, e.g., `julia --threads 10 Control.jl 0.001 1000 1`
   from terminal. Please find the possible parser arguments in the respective julia file.
 - output data/figures are stored in the associated data/figures folder.
 - other physical systems can be implemented by modifying the respective drift and
-  diffusion functions.
+  diffusion functions:
+
+  ```julia
+
+  function qubit_drift!(du,u,p,t)
+    # expansion coefficients |Ψ> = ce |e> + cd |d>
+    ceR, cdR, ceI, cdI = u # real and imaginary parts
+
+    # Δ: atomic frequency
+    # Ω: Rabi frequency for field in x direction
+    # κ: spontaneous emission
+    Δ, Ωmax, κ = p[end-2:end]
+    nn_weights = p[1:end-3]
+    Ω = (nn(u, nn_weights).*Ωmax)[1]
+
+    @inbounds begin
+      du[1] = 1//2*(ceI*Δ-ceR*κ+cdI*Ω)
+      du[2] = -cdI*Δ/2 + 1*ceR*(cdI*ceI+cdR*ceR)*κ+ceI*Ω/2
+      du[3] = 1//2*(-ceR*Δ-ceI*κ-cdR*Ω)
+      du[4] = cdR*Δ/2 + 1*ceI*(cdI*ceI+cdR*ceR)*κ-ceR*Ω/2
+    end
+    return nothing
+  end
+
+  function qubit_diffusion!(du,u,p,t)
+    ceR, cdR, ceI, cdI = u # real and imaginary parts
+
+    @inbounds begin
+      du[2] += sqrt(κ)*ceR
+      du[4] += sqrt(κ)*ceI
+    end
+    return nothing
+  end
+
+  ```
+  to the system at-hand.
+
 - alternative basis expansions replacing the neural networks are described in
-  the [docs](https://diffeqflux.sciml.ai/dev/layers/BasisLayers/).
+  the [docs](https://diffeqflux.sciml.ai/dev/layers/BasisLayers/). For instance,
+  one may use a tensor layer of a polynomial basis expansion:
+  ```julia
+  A = [PolynomialBasis(5)]
+  nn = TensorLayer(A, 4)
+  p_nn = nn.p
+  ```
 
 
 ## Authors:
