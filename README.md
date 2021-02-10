@@ -48,6 +48,9 @@ The repository contains different examples for the control of a single qubit:
   the qubit and a continuously updated control drive using continuous adjoint
   sensitivity methods, see [the file](./closed-system/Control.jl).
 
+* SDE control based on full knowledge of the state of the qubit and a continuously
+  updated control drive using the hand-crafted strategy, see [the file](./hand_crafted/Control.jl).  
+
 
 ### How to run/ prerequisites:
 
