@@ -35,18 +35,18 @@ NN to a hand-crafted control strategy.
 
 The repository contains different examples for the control of a single qubit:
 
-    - SDE control based on full knowledge of the state of the qubit and a continuously
-      updated control drive using continuous adjoint sensitivity methods, see [the file](./continuously-updated-control/Control.jl).
+* SDE control based on full knowledge of the state of the qubit and a continuously
+  updated control drive using continuous adjoint sensitivity methods, see [the file](./continuously-updated-control/Control.jl).
 
-    - SDE control based on full knowledge of the state of the qubit and a
-      piecewise-constant control drive using a direct AD approach, see [the file](./piecewise-constant-control/Control.jl).
+* SDE control based on full knowledge of the state of the qubit and a
+  piecewise-constant control drive using a direct AD approach, see [the file](./piecewise-constant-control/Control.jl).
 
-    - SDE control based on the record of the measured homodyne current and a
-      piecewise-constant control drive using a direct AD approach, see [the file](./homodyne-current/Control.jl).
+* SDE control based on the record of the measured homodyne current and a
+  piecewise-constant control drive using a direct AD approach, see [the file](./homodyne-current/Control.jl).
 
-    - ODE control (closed quantum system) based on full knowledge of the state of
-      the qubit and a continuously updated control drive using continuous adjoint
-      sensitivity methods, see [the file](./closed-system/Control.jl).
+* ODE control (closed quantum system) based on full knowledge of the state of
+  the qubit and a continuously updated control drive using continuous adjoint
+  sensitivity methods, see [the file](./closed-system/Control.jl).
 
 
 ### How to run/ prerequisites:
