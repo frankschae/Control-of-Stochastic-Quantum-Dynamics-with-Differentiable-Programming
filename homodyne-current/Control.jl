@@ -44,7 +44,7 @@ MyParameters=Parameters(
 n_par = 64
 # loss hyperparameters
 C1 = 1.2f0 # evolution state fid
-C2 = 0.0005f0 #0.001f0 # action amplitudes
+C2 = 0.0005f0 # action amplitudes
 C3 = 0.8f0*MyParameters.n_steps/50 #enhance last 50steps
 
 ########################
@@ -320,18 +320,17 @@ end
 # training loop parameters
 epochs=7000
 println("total epochs: ",epochs)
-training=zeros(epochs+1) #initial zero because of grad rejection condition in the training
+training=zeros(epochs+1) #add extra dimension because of grad rejection condition in the training
 maxgrads=zeros(epochs+1)
 some_nans=zeros(epochs+1)
 
 data = Iterators.repeated((), epochs)
 opt = ADAM(0.0001)
 
-
+#grad clipping
 function clip(x)
     min.(max.(x,-40), 40)
 end
-
 
 using DelimitedFiles  #save txt files
 
