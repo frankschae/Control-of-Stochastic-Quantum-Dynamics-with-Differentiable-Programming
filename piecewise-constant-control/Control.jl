@@ -330,7 +330,7 @@ function qb_train!(loss, p1, data, opt,u0)
 			@save string("Data/model_state-in_parallel_",iter,".bson")  p1 re opt
 		end
 		println("++++++++++++++++++++++")
-        Flux.Optimise.update!(opt, ps, gs)
+		Flux.Optimise.update!(opt, ps, gs)
   	end
 	@save string("Data/model_state-in_parallel_END.bson")  p1 re opt
 end
