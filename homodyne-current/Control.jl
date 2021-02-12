@@ -339,11 +339,11 @@ function qb_train!(loss, p1, data, opt,u0)
 	iter = 1  #start with iter=1 because of the grad rejection lines below
 	for d in data
 		iter += 1
-    	prepare_initial!(u0)  #different initial states!
+		prepare_initial!(u0)  #different initial states!
 		#ini_fid=abs2.(sum(Re_ut.*u0[1:2],dims=1))+abs2.(sum(Re_ut.*u0[3:4],dims=1)) #initial mean fidelity
 		@show iter
 		#@show mean(ini_fid)
-    	@time gs = gradient(ps) do
+		@time gs = gradient(ps) do
      		training_loss = loss(Zygote.hook(clip,p1)) #grad clipping does not work now???
 			mut(training,iter,training_loss)
 	  		println("loss: ",training_loss)
