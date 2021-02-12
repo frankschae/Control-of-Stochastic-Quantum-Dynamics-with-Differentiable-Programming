@@ -142,10 +142,10 @@ function prepare_initial!(u0) #random position on the Bloch sphere
 	fill!(u0,0.0f0)
 	theta = acos.(2*rand(n_par).-[1])  #uniform sampling for cos(theta) between -1 and 1
 	phi = rand(n_par)*2*pi
-    #real parts
+        #real parts
 	u0[1,:] += cos.(theta/2)
 	u0[2,:] += sin.(theta/2).*cos.(phi)
-    #imag parts
+        #imag parts
 	#u0[3,:].+=0
 	u0[4,:] += sin.(theta/2).*sin.(phi)
 	#normalize initial state -already normalized by definition
@@ -303,7 +303,7 @@ function loss_along_trajectory(p1)
 		mut(std_action_store,j,std(α))
 		mut_row(single_traj_action_store,j,α)
 		#punish large actions--note, that for j we are pointing to the j-1st action!
-	    loss += C2*MyParameters.gamma^(j)*(mean(abs2.(α))) #mimic...sum max valus
+	        loss += C2*MyParameters.gamma^(j)*(mean(abs2.(α))) #mimic...sum max valus
    		#emphasize the main interval
    		if j>(MyParameters.n_steps-50)
   			loss += C3*MyParameters.gamma^j*(1-mean(fid))
