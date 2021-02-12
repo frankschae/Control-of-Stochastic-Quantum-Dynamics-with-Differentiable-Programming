@@ -1,5 +1,3 @@
-
-
 # make your scripts automatically re-activate your project
 cd(@__DIR__)
 using Pkg; Pkg.activate("."); Pkg.instantiate()
