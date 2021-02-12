@@ -81,8 +81,8 @@ function qb_dynamics_dt!(du,u, α, t)  #du/u have a standard dimension
 	ex_x = real(sum(diag((Arrayσ_p+Arrayσ_m)*Reρ)))
 
 	HIm = -Arrayσ_pm/2 + ex_x*Arrayσ_m
-    du[1:MyParameters.dim] = dψRe = HIm*ψRe + HRe*ψIm; #size dim)
-    du[MyParameters.dim+1:end] = dψIm = HIm*ψIm - HRe*ψRe;
+	du[1:MyParameters.dim] = dψRe = HIm*ψRe + HRe*ψIm; #size dim)
+	du[MyParameters.dim+1:end] = dψIm = HIm*ψIm - HRe*ψRe;
 end
 
 ###################
@@ -375,7 +375,7 @@ function qb_train!(loss, p1, data, opt,u0)
 		# Only gradients that don't lead to a rapid increase of the loss function are accepted
 		# Empirically it prevents instabilities in learning
 		if training[iter]<1.1* training[iter-1]
-            Flux.Optimise.update!(opt, ps, gs)
+			Flux.Optimise.update!(opt, ps, gs)
 		else
 			println("GRADS REJECTED!")
 		end
