@@ -16,7 +16,6 @@ using StaticArrays
 using LinearAlgebra
 using JLD  #saving models
 
-
 #################################################
 #read parameters from external file
 include("parameters_qb.jl")
@@ -81,7 +80,7 @@ function qb_dynamics_dt!(du,u, α, t)  #du/u have a standard dimension
 
     HRe = H_0.+α[1]*H_1 #size (dim,dim) ,alpha is just a single number
 
-	Reρ = ψRe.*transpose(ψRe)+ψIm.*transpose(ψIm)
+    Reρ = ψRe.*transpose(ψRe)+ψIm.*transpose(ψIm)
 	ex_x = real(sum(diag((Arrayσ_p+Arrayσ_m)*Reρ)))
 
 	HIm = -Arrayσ_pm/2 +ex_x*Arrayσ_m
@@ -258,7 +257,7 @@ function loss_along_trajectory(p1)
 		mut(std_action_store,j,std(α))
 		mut_row(single_traj_action_store,j,α)
 		#punish large actions--note, that for j we are pointing to the j-1st action!
-	   	loss += C2*MyParameters.gamma^(j)*(mean(abs2.(α))) #mimic...sum max valus
+        loss += C2*MyParameters.gamma^(j)*(mean(abs2.(α))) #mimic...sum max valus
    		#emphasize the main interval
    		if j>(MyParameters.n_steps-50)
   			loss += C3*MyParameters.gamma^j*(1-mean(fid))
@@ -292,21 +291,21 @@ function qb_train!(loss, p1, data, opt,u0)
 	ps = Flux.params(p1)
 	iter = 0
 	for d in data
-		iter += 1
-    		prepare_initial!(u0)  #different initial states!
-		#ini_fid = abs2.(sum(Re_ut.*u0[1:2],dims=1))+abs2.(sum(Re_ut.*u0[3:4],dims=1)) #initial mean fidelity
+        iter += 1
+        prepare_initial!(u0)  #different initial states!
+        #ini_fid = abs2.(sum(Re_ut.*u0[1:2],dims=1))+abs2.(sum(Re_ut.*u0[3:4],dims=1)) #initial mean fidelity
 		@show iter
 		# @show mean(ini_fid)
-    		@time gs = gradient(ps) do
-     			training_loss = loss(Zygote.hook(clip,p1))
-			mut(training,iter,training_loss)
-	  		println("loss: ",training_loss)
-      		return training_loss
-    		end
-    		maxgrads[iter] = maximum(abs.(gs[p1]))
-    		some_nans[iter] = sum(isnan.(gs[p1]))
-    		println("is nan: ",sum(isnan.(gs[p1])))
-    		println("max grad: ",maximum(abs.(gs[p1])))
+        @time gs = gradient(ps) do
+            training_loss = loss(Zygote.hook(clip,p1))
+            mut(training,iter,training_loss)
+            println("loss: ",training_loss)
+            return training_loss
+        end
+        maxgrads[iter] = maximum(abs.(gs[p1]))
+        some_nans[iter] = sum(isnan.(gs[p1]))
+        println("is nan: ",sum(isnan.(gs[p1])))
+        println("max grad: ",maximum(abs.(gs[p1])))
 		if iter%1 == 0
 			fig1 = plot( [1:MyParameters.n_steps+1,1:MyParameters.n_steps+1],
 			  [mean_fid_store mean_fid_store],
@@ -331,7 +330,7 @@ function qb_train!(loss, p1, data, opt,u0)
 			@save string("Data/model_state-in_parallel_",iter,".bson")  p1 re opt
 		end
 		println("++++++++++++++++++++++")
-    		Flux.Optimise.update!(opt, ps, gs)
+        Flux.Optimise.update!(opt, ps, gs)
   	end
 	@save string("Data/model_state-in_parallel_END.bson")  p1 re opt
 end
