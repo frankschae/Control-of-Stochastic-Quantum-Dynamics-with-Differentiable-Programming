@@ -121,7 +121,7 @@ cb = DiscreteCallback(condition,affect!,save_positions=(false,false))
 
 
 # get control pulses
-p_all = [p_nn; 0*myparameters.Δ; myparameters.Ωmax]
+p_all = [p_nn; myparameters.Δ; myparameters.Ωmax]
 # define ODE problem
 prob = ODEProblem{false}(qubit, vec(u0[:,1]), myparameters.tspan, p_all,
    callback=cb
