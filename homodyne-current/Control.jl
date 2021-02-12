@@ -347,12 +347,12 @@ function qb_train!(loss, p1, data, opt,u0)
      		training_loss = loss(Zygote.hook(clip,p1)) #grad clipping does not work now???
 			mut(training,iter,training_loss)
 	  		println("loss: ",training_loss)
-      	return training_loss
-    	end
-    	maxgrads[iter]=maximum(abs.(gs[p1]))
-    	some_nans[iter]=sum(isnan.(gs[p1]))
-    	println("is nan: ",sum(isnan.(gs[p1])))
-    	println("max grad: ",maximum(abs.(gs[p1])))
+      			return training_loss
+    		end
+    		maxgrads[iter]=maximum(abs.(gs[p1]))
+    		some_nans[iter]=sum(isnan.(gs[p1]))
+    		println("is nan: ",sum(isnan.(gs[p1])))
+    		println("max grad: ",maximum(abs.(gs[p1])))
 		if iter%1 == 0
 			fig1 = plot( [1:MyParameters.n_steps+1,1:MyParameters.n_steps+1],
 			  [mean_fid_store mean_fid_store],
