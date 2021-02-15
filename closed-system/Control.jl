@@ -144,9 +144,9 @@ function loss(p, u0, myparameters::Parameters; sensealg = ForwardDiffSensitivity
     # prepare initial state and applied control pulse
 	u0tmp = deepcopy(vec(u0[:,i]))
     remake(prob,
-	    p = pars,
-	  	u0 = u0tmp,
-  	  	callback = cb
+		p = pars,
+		u0 = u0tmp,
+		callback = cb
 		)
   end
 
@@ -156,11 +156,11 @@ function loss(p, u0, myparameters::Parameters; sensealg = ForwardDiffSensitivity
    )
 
   _sol = solve(ensembleprob, Tsit5(), EnsembleThreads(),
-  	sensealg=sensealg,
-	saveat=myparameters.tinterval,
-	dt=myparameters.dt,
-	adaptive=true, abstol=1e-6, reltol=1e-6,
-	trajectories=myparameters.numtraj, batch_size=myparameters.numtraj)
+    sensealg=sensealg,
+    saveat=myparameters.tinterval,
+    dt=myparameters.dt,
+    adaptive=true, abstol=1e-6, reltol=1e-6,
+    trajectories=myparameters.numtraj, batch_size=myparameters.numtraj)
 
   A = convert(Array,_sol)
   loss = g(A,[myparameters.C1,myparameters.C2,myparameters.C3],nothing)
@@ -179,9 +179,9 @@ function visualize(p, u0, myparameters::Parameters; all_traj = true)
   function prob_func(prob, i, repeat)
     # prepare initial state and applied control pulse
 	remake(prob,
-	    p = pars,
-	  	u0 = vec(u0[:,i]),
-  	  	callback = cb
+		p = pars,
+		u0 = vec(u0[:,i]),
+		callback = cb
 		)
   end
 
@@ -216,7 +216,7 @@ function visualize(p, u0, myparameters::Parameters; all_traj = true)
   arrayu = Array(u)
   Ωlist = []
   for i = 1:(size(arrayu)[2])
-	Ω = vec(nn(arrayu[:,i,:],p).*myparameters.Ωmax)
+    Ω = vec(nn(arrayu[:,i,:],p).*myparameters.Ωmax)
     push!(Ωlist, Ω)
   end
   Ωlist = hcat(Ωlist...)
@@ -225,19 +225,19 @@ function visualize(p, u0, myparameters::Parameters; all_traj = true)
   sa = std(Ωlist, dims=1)[:]
 
   pl1 = plot(0:myparameters.Nintervals, mf,
-	  ribbon = sf,
-	  ylim = (0,1), xlim = (0,myparameters.Nintervals),
-	  c=1, lw = 1.5, xlabel = "steps", ylabel="Fidelity", legend=false)
+		ribbon = sf,
+		ylim = (0,1), xlim = (0,myparameters.Nintervals),
+		c=1, lw = 1.5, xlabel = "steps", ylabel="Fidelity", legend=false)
   pl2 = plot(0:myparameters.Nintervals, ma,
-	  ribbon = sa,
-	  ylim=(-myparameters.Ωmax,myparameters.Ωmax), xlim = (0,myparameters.Nintervals),
-	  c=2, lw = 1.5, xlabel = "steps", ylabel="Ω(t)", legend=false)
+		ribbon = sa,
+		ylim=(-myparameters.Ωmax,myparameters.Ωmax), xlim = (0,myparameters.Nintervals),
+		c=2, lw = 1.5, xlabel = "steps", ylabel="Ω(t)", legend=false)
   if all_traj
      plot!(pl1, fidelity, legend=false, c=:gray, alpha=0.1)
-	 plot!(pl2, Ωlist', legend=false, c=:gray, alpha=0.1)
+     plot!(pl2, Ωlist', legend=false, c=:gray, alpha=0.1)
   else
      plot!(pl1, 0:myparameters.Nintervals, fidelity[:,end],  c=:gray, lw = 1.5, legend=false)
-	 plot!(pl2, 0:myparameters.Nintervals, Ωlist[end,:], c=:gray, lw = 1.5, legend=false)
+     plot!(pl2, 0:myparameters.Nintervals, Ωlist[end,:], c=:gray, lw = 1.5, legend=false)
   end
 
   pl = plot(pl1, pl2, layout = (1, 2), legend = false, size=(800,360))
@@ -260,11 +260,11 @@ for epoch in 1:myparameters.epochs
   push!(losses, _dy)
   if epoch % myparameters.epochs == 0
     # plot every xth epoch
-	local u0 = prepare_initial(myparameters.dt, myparameters.numtrajplot)
-	pl, test_loss = visualize(p_nn, u0, myparameters)
-	println("Loss (epoch: $epoch): $test_loss")
-	display(pl)
-	push!(list_plots, pl)
+    local u0 = prepare_initial(myparameters.dt, myparameters.numtrajplot)
+    pl, test_loss = visualize(p_nn, u0, myparameters)
+    println("Loss (epoch: $epoch): $test_loss")
+    display(pl)
+    push!(list_plots, pl)
   end
   Flux.Optimise.update!(opt, p_nn, gs)
   println("")
