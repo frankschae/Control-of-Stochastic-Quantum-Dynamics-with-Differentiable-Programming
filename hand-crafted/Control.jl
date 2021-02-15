@@ -152,8 +152,8 @@ function visualize(u0, prob::SDEProblem, myparameters::Parameters;
 
   function prob_func(prob, i, repeat)
     # prepare initial state and applied control pulse
-	u0tmp = deepcopy(vec(u0[:,i]))
-	W = sqrt(myparameters.dt)*randn(typeof(myparameters.dt),size(myparameters.ts)) #for 1 trajectory
+    u0tmp = deepcopy(vec(u0[:,i]))
+    W = sqrt(myparameters.dt)*randn(typeof(myparameters.dt),size(myparameters.ts)) #for 1 trajectory
     W1 = cumsum([zero(myparameters.dt); W[1:end-1]], dims=1)
     NG = CreateGrid(myparameters.ts,W1)
 
@@ -196,7 +196,7 @@ function visualize(u0, prob::SDEProblem, myparameters::Parameters;
   arrayu = Array(u)
   Ωlist = []
   for i = 1:(size(arrayu)[2])
-	Ω = [control(arrayu[:,i,j], myparameters.Ωmax) for j = 1:(size(arrayu)[3])]
+    Ω = [control(arrayu[:,i,j], myparameters.Ωmax) for j = 1:(size(arrayu)[3])]
     push!(Ωlist, Ω)
   end
   Ωlist = hcat(Ωlist...)
@@ -205,19 +205,19 @@ function visualize(u0, prob::SDEProblem, myparameters::Parameters;
   #@show size(Ωlist) size(sa)
 
   pl1 = plot(0:myparameters.Nintervals, mf,
-	  ribbon = sf,
-	  ylim = (0,1), xlim = (0,myparameters.Nintervals),
-	  c=:navyblue, lw = 1.5, xlabel = L"i", title=L"F(t_i)", legend=false, grid=false)
+      ribbon = sf,
+      ylim = (0,1), xlim = (0,myparameters.Nintervals),
+      c=:navyblue, lw = 1.5, xlabel = L"i", title=L"F(t_i)", legend=false, grid=false)
   pl2 = plot(0:myparameters.Nintervals, ma,
-	  ribbon = sa,
-	  ylim=(-myparameters.Ωmax,myparameters.Ωmax), xlim = (0,myparameters.Nintervals),
-	  c=:orangered4, lw = 1.5, xlabel = L"i", title=L"\Omega(t_i)", legend=false, grid=false)
+      ribbon = sa,
+      ylim=(-myparameters.Ωmax,myparameters.Ωmax), xlim = (0,myparameters.Nintervals),
+      c=:orangered4, lw = 1.5, xlabel = L"i", title=L"\Omega(t_i)", legend=false, grid=false)
   if all_traj
      plot!(pl1, fidelity, legend=false, c=:gray, alpha=0.1)
-	 plot!(pl2, Ωlist', legend=false, c=:gray, alpha=0.1)
+     plot!(pl2, Ωlist', legend=false, c=:gray, alpha=0.1)
   else
      plot!(pl1, 0:myparameters.Nintervals, fidelity[:,end],  c=:black, lw = 1.5, legend=false)
-	 plot!(pl2, 0:myparameters.Nintervals, Ωlist[end,:], c=:black, lw = 1.5, legend=false)
+     plot!(pl2, 0:myparameters.Nintervals, Ωlist[end,:], c=:black, lw = 1.5, legend=false)
   end
 
   pl = plot(pl1, pl2, layout = (1, 2), legend = false, size=(800,360))
