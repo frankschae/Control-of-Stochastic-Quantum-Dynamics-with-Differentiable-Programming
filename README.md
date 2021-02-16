@@ -3,7 +3,7 @@
 This repository contains a julia implementation for the method introduced in our
 [paper](https://arxiv.org/abs/2101.01190) based on the [SciML ecosytem](https://sciml.ai/).
 A slimmed-down version of the examples with faster runtimes is provided in the
-[SciML docs](https://diffeqflux.sciml.ai/dev/).
+[SciML/DiffEqFlux docs](https://diffeqflux.sciml.ai/dev/examples/SDE_control/).
 
 ### Abstract of the paper
 Controlling stochastic dynamics of a quantum system is an indispensable task in
